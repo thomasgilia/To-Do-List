@@ -10,37 +10,46 @@
 </head>
 
 <body>
-    <ul id="taskList">
-    </ul>
-
+    <div id="taskListParent">
+        <ol style="list-style:none" id="taskList">
+        </ol>
+    </div>
     <form>
         <input type="text" id="newTask">
         <button type="button" class="btn btn-danger" onclick="addTask()">Add</button>
     </form>
 
+    <button type="button" class="btn btn-danger" onclick="deleteAll()">Delete list</button>
 
     <script>
         function addTask() {
             if (newTask.value) {
-                let addingElement = "<li> " + newTask.value;
-                //the above works just like this: let addingElement = "<li> " + newTask.value + " </li>";
-                document.getElementById("taskList").innerHTML += addingElement;
+                let taskList = document.getElementById("taskList");
+                let addingElement = "<li><span class=\"delete\">&times;</span><input type=\"checkbox\" class=\"done\"> " + newTask.value + " </li>";
+                taskList.innerHTML += addingElement;
+                newTask.value = null;
             }
         }
-        function completeTask() {
+        //         function completeTask(event) {
+        //             event.target
+        //             let task = document.getElementById("")
+        // if (class="delete")
+        //         }
+        // function deleteTask() {
 
-        }
-        function deleteTask() {
-
-        }
-        function deleteAll() {
-
-        }
-        // function init() {
-        //     let taskList = document.getElementById("taskList").innerHTML;
-        //     console.log("Current tasks: " + taskList);
         // }
-        // init();
+
+        function deleteAll() {
+            let taskListParent = document.getElementById("taskListParent");
+            taskListParent.removeChild(taskList);
+            taskListParent.innerHTML = "<ol style=\"list-style:none\" id=\"taskList\"></ol>";
+        }
+
+        function init() {
+            let initialTaskList = document.getElementById("taskList").innerHTML;
+            console.log("Initial tasks: " + initialTaskList);
+        }
+        init();
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
