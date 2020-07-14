@@ -10,46 +10,78 @@
 </head>
 
 <body>
-    <div id="taskListParent">
-        <ol style="list-style:none" id="taskList">
-        </ol>
-    </div>
-    <form>
-        <input type="text" id="newTask">
-        <button type="button" class="btn btn-danger" onclick="addTask()">Add</button>
-    </form>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h3 class="card-title">You can do it!</h3>
+            <p class="card-text">
+            <form>
+                <input type="text" id="newTask">
+                <button type="button" class="btn btn-danger" onclick="addTask()">Add a task</button>
+            </form>
 
-    <button type="button" class="btn btn-danger" onclick="deleteAll()">Delete list</button>
+            <div id="taskListParent">
+                <ol style="list-style:none" id="taskList">
+                </ol>
+            </div>
+
+            <button type="button" class="btn btn-danger" onclick="deleteAll()">Delete list</button>
+            <H4 hidden id="goodJob">Good job!</H4>
+            <H4 hidden id="aNewDay">Tomorrow's a new day</H4>
+            <H4 hidden id="oops">Oops I (gotta do it) again</H4>
+            </p>
+        </div>
+    </div>
 
     <script>
         function addTask() {
             if (newTask.value) {
                 let taskList = document.getElementById("taskList");
-                let addingElement = "<li><span class=\"delete\">&times;</span><input type=\"checkbox\" class=\"done\"> " + newTask.value + " </li>";
+                let addingElement = "<li><span class=\"delete\" onclick=\"deleteTask(event)\">&times;</span><input type=\"checkbox\" class=\"done\" id=\"theCheckbox\" onclick=\"completeTask(event)\"> " + `<label>${newTask.value}</label>` + " </li>";
                 taskList.innerHTML += addingElement;
                 newTask.value = null;
+                document.getElementById("aNewDay").hidden = true;
+                document.getElementById("oops").hidden = true;
+                document.getElementById("goodJob").hidden = true;
             }
         }
-        //         function completeTask(event) {
-        //             event.target
-        //             let task = document.getElementById("")
-        // if (class="delete")
-        //         }
-        // function deleteTask() {
 
-        // }
+        function completeTask(event) {
+            let checkbox = event.target;
+            let text = checkbox.nextSibling.nextSibling;   //the actual text as a string
+
+            if (checkbox.checked == true) {
+                text.style.fontStyle = "italic";
+                text.style.color = "blue";
+                // console.log("sweet");
+                document.getElementById("oops").hidden = true;
+                document.getElementById("aNewDay").hidden = true;
+                document.getElementById("goodJob").hidden = false;
+            }
+            if (checkbox.checked == false) {
+                text.style.fontStyle = "normal";
+                text.style.color = "black";
+                // console.log("crud")
+                document.getElementById("oops").hidden = false;
+                document.getElementById("aNewDay").hidden = true;
+                document.getElementById("goodJob").hidden = true;
+            }
+        }
+
+        function deleteTask(event) {
+            let taskList = document.getElementById("taskList");
+            let thisTask = event.target.parentNode
+            taskList.removeChild(thisTask);
+        }
 
         function deleteAll() {
             let taskListParent = document.getElementById("taskListParent");
             taskListParent.removeChild(taskList);
             taskListParent.innerHTML = "<ol style=\"list-style:none\" id=\"taskList\"></ol>";
+            document.getElementById("aNewDay").hidden = false;
+            document.getElementById("oops").hidden = true;
+            document.getElementById("goodJob").hidden = true;
         }
 
-        function init() {
-            let initialTaskList = document.getElementById("taskList").innerHTML;
-            console.log("Initial tasks: " + initialTaskList);
-        }
-        init();
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
